@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>王又贏學日文五十音 1.5.1</title>
+    <title>王又贏學日文五十音 1.4.4</title>
     
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VWZZ03R3TL"></script>
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
     <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
     <style>
-        /* 原有所有樣式保留，僅修改 .footer-info 部分 */
+        /* ========== 原有樣式（完全保留） ========== */
         * {
             margin: 0;
             padding: 0;
@@ -198,7 +198,7 @@
             }
         }
 
-        /* ========== 修正後的作者連結區塊 ========== */
+        /* ========== 修正：作者固定在中央，連結從上下展開 ========== */
         .footer-info {
             position: fixed;
             bottom: 50%;
@@ -208,18 +208,18 @@
             backdrop-filter: blur(8px);
             padding: 12px 18px;
             border-radius: 28px;
-            font-size: 14px;
             z-index: 1000;
             display: flex;
             flex-direction: column;
-            gap: 8px;
             align-items: center;
+            justify-content: center;
             font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
             transition: all 0.3s ease;
             min-width: 180px;
             max-width: 280px;
         }
 
+        /* 作者名稱樣式，位置居中 */
         .footer-info .author {
             color: #ffd700;
             font-weight: 600;
@@ -229,8 +229,10 @@
             letter-spacing: 1px;
             text-align: center;
             width: 100%;
-            padding: 4px 0;
+            padding: 6px 0;
             white-space: nowrap;
+            position: relative;
+            z-index: 2;
         }
 
         .footer-info .author::before {
@@ -242,7 +244,7 @@
             text-shadow: 0 0 6px #ffd700;
         }
 
-        /* 上下兩個連結區塊共用樣式（無標題，純連結列表） */
+        /* 上下連結組共用樣式 */
         .link-group {
             width: 100%;
             overflow: hidden;
@@ -252,19 +254,20 @@
             visibility: hidden;
         }
 
+        /* 展開時上下兩組同時出現 */
         .footer-info.show .link-group {
-            max-height: 300px;    /* 足夠容納所有連結，無需滾輪 */
+            max-height: 300px;   /* 足夠容納所有連結，無滾輪 */
             opacity: 1;
             visibility: visible;
-            margin-top: 6px;
         }
 
-        /* 上下兩組之間加分隔線 */
-        .link-group-upper {
-            border-bottom: 1px solid rgba(255,255,255,0.3);
+        /* 上方組與作者之間的間距 */
+        .footer-info.show .link-group-upper {
+            margin-bottom: 8px;
         }
-        .link-group-lower {
-            margin-top: 2px;
+        /* 下方組與作者之間的間距 */
+        .footer-info.show .link-group-lower {
+            margin-top: 8px;
         }
 
         .link-list {
@@ -306,7 +309,6 @@
                 top: auto;
                 transform: none;
                 padding: 10px 14px;
-                font-size: 12px;
                 max-width: 240px;
                 min-width: 160px;
             }
@@ -328,28 +330,27 @@
         <div class="loading" id="loading">載入中...</div>
     </div>
 
-    <!-- 作者連結區塊：點擊作者展開上下兩組連結，無標題，無滾輪，大小適中 -->
+    <!-- 作者連結區塊：作者居中，連結分別從上方和下方展開 -->
     <div class="footer-info" id="footer-info">
-        <span class="author" id="author-name">作者:王靖凱 目錄</span>
-
-        <!-- 上方連結組：好書推薦、聯絡方式 -->
-        <div class="link-group link-group-upper" id="link-group-upper">
+        <!-- 上方連結組（好書推薦、聯絡方式） -->
+        <div class="link-group link-group-upper">
             <div class="link-list">
                 <a href="https://kakuyomu.jp/works/1177354054917560964" target="_blank" rel="noopener noreferrer">好書推薦-赤月ヤモリ(1)</a>
                 <a href="https://kakuyomu.jp/works/16817330661274615404" target="_blank" rel="noopener noreferrer">好書推薦-赤月ヤモリ(2)</a>
                 <a href="https://www.facebook.com/eden.wang.54/" target="_blank" rel="noopener noreferrer">作者的FB</a>
                 <a href="mailto:yakinikumanjjj@gmail.com?subject=意見回饋">意見回饋</a>
-                <!-- 可在此繼續新增連結，只要總高度不超過 max-height 就不會出現滾輪 -->
             </div>
         </div>
 
-        <!-- 下方連結組：韓文、日文學習資源 -->
-        <div class="link-group link-group-lower" id="link-group-lower">
+        <!-- 作者名稱（固定在中間） -->
+        <span class="author" id="author-name">作者:王靖凱 目錄</span>
+
+        <!-- 下方連結組（韓文、日文學習資源） -->
+        <div class="link-group link-group-lower">
             <div class="link-list">
                 <a href="https://edenjjj.pyscriptapps.com/han-wen-40yin/latest/" target="_blank" rel="noopener noreferrer">韓文40音</a>
                 <a href="https://docs.google.com/document/d/1r4BR8HRo5CoJqII_uXjkPwSovCmlb4fW_G-j6vc2Jbk/edit?usp=sharing/" target="_blank" rel="noopener noreferrer">N1音讀漢語</a>
                 <a href="https://docs.google.com/document/d/16G_nK8qEcrzQ3HOu6X9W69SU4wP8l8D-CjtLOWFSatw/edit?usp=sharing/" target="_blank" rel="noopener noreferrer">N1動形容詞500個</a>
-                <!-- 可在此繼續新增更多學習連結 -->
             </div>
         </div>
     </div>
@@ -373,7 +374,7 @@
         
         author_name.addEventListener('click', create_proxy(toggle_links))
 
-        # ========== 以下為原有 PyScript 程式碼（完全保留，無需改動） ==========
+        # ========== 以下為原有 PyScript 程式碼（完全保留） ==========
         RAW_TEXTS = {
             4: "あ い う え お か き く け こ さ し す せ そ た ち つ て と な に ぬ ね の は ひ ふ へ ほ ま み む め も や ゆ よ ら り る れ ろ わ を ん",
             5: "ア イ ウ エ オ カ キ ク ケ コ サ シ ス セ ソ タ チ ツ テ ト ナ ニ ヌ ネ ノ ハ ヒ フ ヘ ホ マ ミ ム メ モ ヤ ユ ヨ ラ リ ル レ ロ ワ ヲ ン",
@@ -436,7 +437,6 @@
             'ざ': 'za', 'じ': 'ji', 'ず': 'zu', 'ぜ': 'ze', 'ぞ': 'zo',
             'だ': 'da', 'ぢ': 'ji', 'づ': 'zu', 'で': 'de', 'ど': 'do',
             'ば': 'ba', 'び': 'bi', 'ぶ': 'bu', 'べ': 'be', 'ぼ': 'bo',
-            'ぱ': 'pa', 'び': 'bi', 'ぶ': 'bu', 'べ': 'be', 'ぼ': 'bo',
             'ぱ': 'pa', 'ぴ': 'pi', 'ぷ': 'pu', 'ぺ': 'pe', 'ぽ': 'po',
             'きゃ': 'kya', 'きゅ': 'kyu', 'きょ': 'kyo',
             'しゃ': 'sha', 'しゅ': 'shu', 'しょ': 'sho',
