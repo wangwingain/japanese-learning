@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>王又贏學日文五十音 1.5.1</title>
+    <title>王又贏學日文五十音 1.6.0</title>
     
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VWZZ03R3TL"></script>
@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
     <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
     <style>
-        /* ========== 原有樣式（完全保留） ========== */
+        /* ========== 原有樣式 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -201,7 +201,7 @@
             }
         }
 
-        /* ========== 修正：作者固定在中央，連結從上下展開，無圖示無特效 ========== */
+        /* ========== 作者連結區塊 + 音量按鈕 ========== */
         .footer-info {
             position: fixed;
             bottom: 60%;
@@ -222,32 +222,78 @@
             max-width: 280px;
         }
 
-        /* 作者名稱樣式 - 移除圖示和發光特效 */
+        /* 作者名稱和音量按鈕的容器 */
+        .author-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+
         .footer-info .author {
             color: #ffd700;
             font-weight: 600;
             cursor: pointer;
-            transition: none;  /* 移除 hover 特效 */
+            transition: none;
             font-size: 16px;
             letter-spacing: 1px;
             text-align: center;
-            width: 100%;
             padding: 6px 0;
             white-space: nowrap;
             position: relative;
             z-index: 2;
         }
 
-        /* 移除圖示 */
+        /* 移除作者圖示 */
         .footer-info .author::before {
             content: "";
             display: none;
         }
 
-        /* 移除 hover 放大和發光效果 */
         .footer-info .author:hover {
             transform: none;
             text-shadow: none;
+        }
+
+        /* 音量按鈕樣式 */
+        .speaker-btn {
+            background: rgba(78, 205, 196, 0.3);
+            border: 1px solid #4ecdc4;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 16px;
+            color: #4ecdc4;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .speaker-btn:hover {
+            background: #4ecdc4;
+            color: #1a2a3a;
+            transform: scale(1.05);
+        }
+
+        .speaker-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* 朗讀中動畫效果 */
+        .speaker-btn.speaking {
+            animation: pulse 0.5s ease-in-out infinite;
+            background: #ffd700;
+            color: #1a2a3a;
+            border-color: #ffd700;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
         }
 
         /* 上下連結組共用樣式 */
@@ -260,18 +306,15 @@
             visibility: hidden;
         }
 
-        /* 展開時上下兩組同時出現 */
         .footer-info.show .link-group {
-            max-height: 300px;   /* 足夠容納所有連結，無滾輪 */
+            max-height: 300px;
             opacity: 1;
             visibility: visible;
         }
 
-        /* 上方組與作者之間的間距 */
         .footer-info.show .link-group-upper {
             margin-bottom: 8px;
         }
-        /* 下方組與作者之間的間距 */
         .footer-info.show .link-group-lower {
             margin-top: 8px;
         }
@@ -307,7 +350,6 @@
             transform: translateX(2px);
         }
 
-        /* 手機版調整 */
         @media screen and (max-width: 567px) {
             .footer-info {
                 bottom: 12px;
@@ -321,6 +363,11 @@
             .footer-info .author {
                 font-size: 14px;
                 white-space: normal;
+            }
+            .speaker-btn {
+                width: 24px;
+                height: 24px;
+                font-size: 14px;
             }
             .footer-info a {
                 font-size: 11px;
@@ -336,9 +383,9 @@
         <div class="loading" id="loading">載入中...</div>
     </div>
 
-    <!-- 作者連結區塊：作者居中，連結分別從上方和下方展開 -->
+    <!-- 作者連結區塊：作者居中，連結從上下展開，新增音量按鈕 -->
     <div class="footer-info" id="footer-info">
-        <!-- 上方連結組（好書推薦、聯絡方式） -->
+        <!-- 上方連結組 -->
         <div class="link-group link-group-upper">
             <div class="link-list">
                <a href="privacy.html" target="_blank">隱私權政策</a>
@@ -349,10 +396,13 @@
             </div>
         </div>
 
-        <!-- 作者名稱（固定在中間） -->
-        <span class="author" id="author-name">作者:王靖凱 目錄</span>
+        <!-- 作者名稱 + 音量按鈕容器 -->
+        <div class="author-container">
+            <span class="author" id="author-name">作者:王靖凱 目錄</span>
+            <div class="speaker-btn" id="speaker-btn" title="朗讀目前顯示的文字">🔊</div>
+        </div>
 
-        <!-- 下方連結組（韓文、日文學習資源） -->
+        <!-- 下方連結組 -->
         <div class="link-group link-group-lower">
             <div class="link-list">
                 <a href="https://edenjjj.pyscriptapps.com/han-wen-40yin/latest/" target="_blank" rel="noopener noreferrer">韓文40音</a>
@@ -372,7 +422,9 @@
         loading_div = document.getElementById('loading')
         footer_info = document.getElementById('footer-info')
         author_name = document.getElementById('author-name')
+        speaker_btn = document.getElementById('speaker-btn')
         
+        # 切換連結顯示
         def toggle_links(event):
             if footer_info.classList.contains('show'):
                 footer_info.classList.remove('show')
@@ -380,8 +432,71 @@
                 footer_info.classList.add('show')
         
         author_name.addEventListener('click', create_proxy(toggle_links))
+        
+        # ========== AI 朗讀功能 ==========
+        # 使用瀏覽器內建的 Web Speech API
+        from js import speechSynthesis, SpeechSynthesisUtterance
+        
+        # 判斷文字是哪種語言（簡單版）
+        def detect_language(text):
+            # 檢查是否包含韓文（諺文範圍 AC00-D7AF）
+            for ch in text:
+                if 0xAC00 <= ord(ch) <= 0xD7AF:
+                    return 'ko-KR'
+            # 檢查是否包含日文（平假名、片假名範圍）
+            for ch in text:
+                if 0x3040 <= ord(ch) <= 0x30FF:
+                    return 'ja-JP'
+            # 預設日文
+            return 'ja-JP'
+        
+        # 朗讀當前文字
+        def speak_text(event):
+            # 獲取 dialog-1 顯示的當前文字
+            current_word_element = document.getElementById('content-1')
+            if not current_word_element:
+                print("找不到當前文字元素")
+                return
+            
+            text_to_speak = current_word_element.textContent
+            if not text_to_speak or text_to_speak == '':
+                print("沒有文字可朗讀")
+                return
+            
+            # 添加朗讀中動畫效果
+            speaker_btn.classList.add('speaking')
+            
+            # 檢測語言
+            lang = detect_language(text_to_speak)
+            
+            # 創建語音合成物件
+            utterance = SpeechSynthesisUtterance.new(text_to_speak)
+            utterance.lang = lang
+            utterance.rate = 0.9  # 語速稍慢，適合學習
+            utterance.pitch = 1.0
+            
+            # 朗讀結束後移除動畫效果
+            def on_end(event):
+                speaker_btn.classList.remove('speaking')
+            
+            utterance.onend = create_proxy(on_end)
+            
+            # 朗讀錯誤處理
+            def on_error(event):
+                speaker_btn.classList.remove('speaking')
+                print(f"朗讀錯誤: {event}")
+            
+            utterance.onerror = create_proxy(on_error)
+            
+            # 開始朗讀
+            speechSynthesis.cancel()  # 停止任何正在進行的朗讀
+            speechSynthesis.speak(utterance)
+            print(f"朗讀: {text_to_speak} (語言: {lang})")
+        
+        # 綁定音量按鈕點擊事件
+        speaker_btn.addEventListener('click', create_proxy(speak_text))
 
-        # ========== 以下為原有 PyScript 程式碼（完全保留） ==========
+        # ========== 以下為原有 PyScript 程式碼 ==========
         RAW_TEXTS = {
             4: "あ い う え お か き く け こ さ し す せ そ た ち つ て と な に ぬ ね の は ひ ふ へ ほ ま み む め も や ゆ よ ら り る れ ろ わ を ん",
             5: "ア イ ウ エ オ カ キ ク ケ コ サ シ ス セ ソ タ チ ツ テ ト ナ ニ ヌ ネ ノ ハ ヒ フ ヘ ホ マ ミ ム メ モ ヤ ユ ヨ ラ リ ル レ ロ ワ ヲ ン",
