@@ -62,6 +62,7 @@
             transition: all 0.3s ease;
             border: 2px solid transparent;
             overflow: hidden;
+            position: relative;
         }
 
         @media screen and (min-width: 568px) {
@@ -90,6 +91,7 @@
             }
             .dialog-1 {
                 min-height: 200px;
+                position: relative;
             }
             .pronunciation-row {
                 display: flex;
@@ -164,7 +166,7 @@
             transform: scale(0.98);
         }
 
-        .dialog-1 { background: linear-gradient(145deg, #ff6b6b, #ff8e8e); }
+        .dialog-1 { background: linear-gradient(145deg, #ff6b6b, #ff8e8e); position: relative; }
         .dialog-2 { background: linear-gradient(145deg, #4ecdc4, #6ee7e7); }
         .dialog-3 { background: linear-gradient(145deg, #4ecdc4, #6ee7e7); }
         .dialog-4 { background: linear-gradient(145deg, #96ceb4, #b8e0c0); }
@@ -177,6 +179,61 @@
             background: linear-gradient(145deg, #8a6ef0, #aa88ff);
             box-shadow: 0 0 20px #8a6ef0, 0 10px 30px rgba(0, 0, 0, 0.4);
             border: 2px solid #ffd700;
+        }
+
+        /* 紅色大框框右下角的音量按鈕 */
+        .speaker-btn-red {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            width: 56px;
+            height: 56px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 28px;
+            color: white;
+            z-index: 10;
+            backdrop-filter: blur(4px);
+        }
+
+        .speaker-btn-red:hover {
+            transform: scale(1.1);
+            background: rgba(0, 0, 0, 0.8);
+            border-color: #ffd700;
+        }
+
+        .speaker-btn-red:active {
+            transform: scale(0.95);
+        }
+
+        /* 朗讀中動畫效果 */
+        .speaker-btn-red.speaking {
+            animation: pulse-red 0.5s ease-in-out infinite;
+            background: #ffd700;
+            color: #ff6b6b;
+            border-color: #ffd700;
+        }
+
+        @keyframes pulse-red {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.15); opacity: 0.9; }
+        }
+
+        /* 手機版音量按鈕稍微縮小但還是比原本大兩倍 */
+        @media screen and (max-width: 567px) {
+            .speaker-btn-red {
+                width: 48px;
+                height: 48px;
+                font-size: 24px;
+                bottom: 12px;
+                right: 12px;
+            }
         }
 
         .loading {
@@ -201,7 +258,7 @@
             }
         }
 
-        /* ========== 作者連結區塊 + 音量按鈕 ========== */
+        /* ========== 作者連結區塊 ========== */
         .footer-info {
             position: fixed;
             bottom: 60%;
@@ -222,15 +279,6 @@
             max-width: 280px;
         }
 
-        /* 作者名稱和音量按鈕的容器 */
-        .author-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-        }
-
         .footer-info .author {
             color: #ffd700;
             font-weight: 600;
@@ -239,13 +287,13 @@
             font-size: 16px;
             letter-spacing: 1px;
             text-align: center;
+            width: 100%;
             padding: 6px 0;
             white-space: nowrap;
             position: relative;
             z-index: 2;
         }
 
-        /* 移除作者圖示 */
         .footer-info .author::before {
             content: "";
             display: none;
@@ -256,47 +304,6 @@
             text-shadow: none;
         }
 
-        /* 音量按鈕樣式 */
-        .speaker-btn {
-            background: rgba(78, 205, 196, 0.3);
-            border: 1px solid #4ecdc4;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 16px;
-            color: #4ecdc4;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .speaker-btn:hover {
-            background: #4ecdc4;
-            color: #1a2a3a;
-            transform: scale(1.05);
-        }
-
-        .speaker-btn:active {
-            transform: scale(0.95);
-        }
-
-        /* 朗讀中動畫效果 */
-        .speaker-btn.speaking {
-            animation: pulse 0.5s ease-in-out infinite;
-            background: #ffd700;
-            color: #1a2a3a;
-            border-color: #ffd700;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-        }
-
-        /* 上下連結組共用樣式 */
         .link-group {
             width: 100%;
             overflow: hidden;
@@ -364,11 +371,6 @@
                 font-size: 14px;
                 white-space: normal;
             }
-            .speaker-btn {
-                width: 24px;
-                height: 24px;
-                font-size: 14px;
-            }
             .footer-info a {
                 font-size: 11px;
             }
@@ -383,9 +385,8 @@
         <div class="loading" id="loading">載入中...</div>
     </div>
 
-    <!-- 作者連結區塊：作者居中，連結從上下展開，新增音量按鈕 -->
+    <!-- 作者連結區塊 -->
     <div class="footer-info" id="footer-info">
-        <!-- 上方連結組 -->
         <div class="link-group link-group-upper">
             <div class="link-list">
                <a href="privacy.html" target="_blank">隱私權政策</a>
@@ -395,14 +396,7 @@
                <a href="https://kakuyomu.jp/works/1177354054917560964" target="_blank" rel="noopener noreferrer">好書推薦-赤月ヤモリ(1)</a>
             </div>
         </div>
-
-        <!-- 作者名稱 + 音量按鈕容器 -->
-        <div class="author-container">
-            <span class="author" id="author-name">作者:王靖凱 目錄</span>
-            <div class="speaker-btn" id="speaker-btn" title="朗讀目前顯示的文字">🔊</div>
-        </div>
-
-        <!-- 下方連結組 -->
+        <span class="author" id="author-name">作者:王靖凱 目錄</span>
         <div class="link-group link-group-lower">
             <div class="link-list">
                 <a href="https://edenjjj.pyscriptapps.com/han-wen-40yin/latest/" target="_blank" rel="noopener noreferrer">韓文40音</a>
@@ -422,7 +416,6 @@
         loading_div = document.getElementById('loading')
         footer_info = document.getElementById('footer-info')
         author_name = document.getElementById('author-name')
-        speaker_btn = document.getElementById('speaker-btn')
         
         # 切換連結顯示
         def toggle_links(event):
@@ -432,71 +425,8 @@
                 footer_info.classList.add('show')
         
         author_name.addEventListener('click', create_proxy(toggle_links))
-        
-        # ========== AI 朗讀功能 ==========
-        # 使用瀏覽器內建的 Web Speech API
-        from js import speechSynthesis, SpeechSynthesisUtterance
-        
-        # 判斷文字是哪種語言（簡單版）
-        def detect_language(text):
-            # 檢查是否包含韓文（諺文範圍 AC00-D7AF）
-            for ch in text:
-                if 0xAC00 <= ord(ch) <= 0xD7AF:
-                    return 'ko-KR'
-            # 檢查是否包含日文（平假名、片假名範圍）
-            for ch in text:
-                if 0x3040 <= ord(ch) <= 0x30FF:
-                    return 'ja-JP'
-            # 預設日文
-            return 'ja-JP'
-        
-        # 朗讀當前文字
-        def speak_text(event):
-            # 獲取 dialog-1 顯示的當前文字
-            current_word_element = document.getElementById('content-1')
-            if not current_word_element:
-                print("找不到當前文字元素")
-                return
-            
-            text_to_speak = current_word_element.textContent
-            if not text_to_speak or text_to_speak == '':
-                print("沒有文字可朗讀")
-                return
-            
-            # 添加朗讀中動畫效果
-            speaker_btn.classList.add('speaking')
-            
-            # 檢測語言
-            lang = detect_language(text_to_speak)
-            
-            # 創建語音合成物件
-            utterance = SpeechSynthesisUtterance.new(text_to_speak)
-            utterance.lang = lang
-            utterance.rate = 0.9  # 語速稍慢，適合學習
-            utterance.pitch = 1.0
-            
-            # 朗讀結束後移除動畫效果
-            def on_end(event):
-                speaker_btn.classList.remove('speaking')
-            
-            utterance.onend = create_proxy(on_end)
-            
-            # 朗讀錯誤處理
-            def on_error(event):
-                speaker_btn.classList.remove('speaking')
-                print(f"朗讀錯誤: {event}")
-            
-            utterance.onerror = create_proxy(on_error)
-            
-            # 開始朗讀
-            speechSynthesis.cancel()  # 停止任何正在進行的朗讀
-            speechSynthesis.speak(utterance)
-            print(f"朗讀: {text_to_speak} (語言: {lang})")
-        
-        # 綁定音量按鈕點擊事件
-        speaker_btn.addEventListener('click', create_proxy(speak_text))
 
-        # ========== 以下為原有 PyScript 程式碼 ==========
+        # ========== 以下為原有 PyScript 程式碼（朗讀功能會在主程式後加入） ==========
         RAW_TEXTS = {
             4: "あ い う え お か き く け こ さ し す せ そ た ち つ て と な に ぬ ね の は ひ ふ へ ほ ま み む め も や ゆ よ ら り る れ ろ わ を ん",
             5: "ア イ ウ エ オ カ キ ク ケ コ サ シ ス セ ソ タ チ ツ テ ト ナ ニ ヌ ネ ノ ハ ヒ フ ヘ ホ マ ミ ム メ モ ヤ ユ ヨ ラ リ ル レ ロ ワ ヲ ン",
@@ -699,6 +629,16 @@
                 content_div.textContent = '讀音'
             elif dialog_id == 9:
                 content_div.textContent = '下一個'
+            
+            # 如果是 dialog-1，添加音量按鈕
+            if dialog_id == 1:
+                speaker_btn = document.createElement('div')
+                speaker_btn.id = 'speaker-btn-red'
+                speaker_btn.className = 'speaker-btn-red'
+                speaker_btn.textContent = '🔊'
+                speaker_btn.title = '朗讀目前顯示的文字'
+                dialog.appendChild(speaker_btn)
+            
             if is_mobile:
                 create_mobile_layout(dialog, dialog_id)
             else:
@@ -757,6 +697,104 @@
 
         if loading_div:
             loading_div.style.display = 'none'
+
+        # ========== 朗讀功能 ==========
+        from js import speechSynthesis, SpeechSynthesisUtterance
+        
+        best_ja_voice = None
+        best_ko_voice = None
+        voices_loaded = False
+        speaker_red_btn = None
+        
+        def init_voices():
+            global best_ja_voice, best_ko_voice, voices_loaded
+            voices = speechSynthesis.getVoices()
+            
+            for voice in voices:
+                if 'ja' in voice.lang and not best_ja_voice:
+                    best_ja_voice = voice
+                if 'ko' in voice.lang and not best_ko_voice:
+                    best_ko_voice = voice
+            
+            voices_loaded = True
+            if best_ja_voice:
+                print(f"日文語音: {best_ja_voice.name}")
+            if best_ko_voice:
+                print(f"韓文語音: {best_ko_voice.name}")
+
+        def detect_language(text):
+            for ch in text:
+                if 0xAC00 <= ord(ch) <= 0xD7AF:
+                    return 'ko-KR'
+            for ch in text:
+                if 0x3040 <= ord(ch) <= 0x30FF:
+                    return 'ja-JP'
+            return 'ja-JP'
+
+        def speak_text(event):
+            global best_ja_voice, best_ko_voice
+            if not voices_loaded:
+                init_voices()
+            
+            current_word_element = document.getElementById('content-1')
+            if not current_word_element:
+                print("找不到當前文字元素")
+                return
+            
+            text_to_speak = current_word_element.textContent
+            if not text_to_speak or text_to_speak == '':
+                print("沒有文字可朗讀")
+                return
+            
+            if speaker_red_btn:
+                speaker_red_btn.classList.add('speaking')
+            
+            lang = detect_language(text_to_speak)
+            
+            utterance = SpeechSynthesisUtterance.new(text_to_speak)
+            utterance.lang = lang
+            utterance.rate = 0.85
+            utterance.pitch = 1.05
+            
+            if lang == 'ja-JP' and best_ja_voice:
+                utterance.voice = best_ja_voice
+            elif lang == 'ko-KR' and best_ko_voice:
+                utterance.voice = best_ko_voice
+            
+            def on_end(event):
+                if speaker_red_btn:
+                    speaker_red_btn.classList.remove('speaking')
+            
+            def on_error(event):
+                if speaker_red_btn:
+                    speaker_red_btn.classList.remove('speaking')
+                print(f"朗讀錯誤: {event.error}")
+            
+            utterance.onend = create_proxy(on_end)
+            utterance.onerror = create_proxy(on_error)
+            
+            speechSynthesis.cancel()
+            speechSynthesis.speak(utterance)
+            print(f"朗讀: {text_to_speak} (語言: {lang})")
+
+        def on_voices_changed():
+            init_voices()
+
+        speechSynthesis.onvoiceschanged = create_proxy(on_voices_changed)
+        init_voices()
+        
+        # 獲取音量按鈕並綁定事件
+        def bind_speaker_button():
+            global speaker_red_btn
+            speaker_red_btn = document.getElementById('speaker-btn-red')
+            if speaker_red_btn:
+                speaker_red_btn.addEventListener('click', create_proxy(speak_text))
+                print("音量按鈕已綁定")
+            else:
+                # 延遲重試
+                window.setTimeout(create_proxy(bind_speaker_button), 500)
+        
+        bind_speaker_button()
 
         def update_library_appearance():
             for lib_id in [4, 5, 6, 7]:
@@ -851,6 +889,11 @@
         current_word = random.choice(library_words[4])
         update_library_appearance()
         update_displays()
+
+        print('=' * 50)
+        print('王又贏學日文五十音 - 音量按鈕已移至紅色大框框右下角')
+        print('音量按鈕放大兩倍，手機版同樣顯示在紅色框內部右下角')
+        print('=' * 50)
     </py-script>
 </body>
 </html>
