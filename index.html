@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VWZZ03R3TL"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-VWZZ03R3TL');
-</script>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>王又贏學日文五十音 1.4.1</title>
+    <title>王又贏學日文五十音 1.4.2</title>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VWZZ03R3TL"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-VWZZ03R3TL');
+    </script>
+    
     <!-- 引入 PyScript -->
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
     <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
@@ -226,16 +225,16 @@
             }
         }
 
-        /* 作者和超連結樣式 - 點擊顯示，再次點擊收回 */
+        /* ========== 全新的作者連結區塊 ========== */
         .footer-info {
             position: fixed;
             bottom: 50%;
             left: 15px;
             transform: translateY(50%);
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            padding: 8px 15px;
-            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            padding: 12px 16px;
+            border-radius: 24px;
             font-size: 14px;
             z-index: 1000;
             display: flex;
@@ -244,87 +243,119 @@
             align-items: center;
             font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
             transition: all 0.3s ease;
+            max-width: 260px;
         }
 
         .footer-info .author {
             color: #ffd700;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-align: center;
+            width: 100%;
+            padding: 4px 0;
         }
 
         .footer-info .author::before {
-            content: "😽 ";
+            content: "📚 ";
         }
 
         .footer-info .author:hover {
-            transform: scale(1.05);
+            transform: scale(1.02);
+            text-shadow: 0 0 6px #ffd700;
         }
 
-        /* 超連結預設隱藏 */
-        .footer-info .link-wrapper {
+        /* 連結區塊共用樣式 */
+        .link-section {
+            width: 100%;
+            overflow-y: auto;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
             max-height: 0;
             opacity: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease, opacity 0.3s ease;
+            visibility: hidden;
+        }
+
+        .footer-info.show .link-section {
+            max-height: 200px;    /* 足夠顯示約 10 個連結，超過可滾動 */
+            opacity: 1;
+            visibility: visible;
+            margin-top: 6px;
+        }
+
+        /* 上方區塊與下方區塊分隔 */
+        .link-section-upper {
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            margin-bottom: 6px;
+        }
+
+        .link-section-lower {
+            margin-top: 2px;
+        }
+
+        .link-section-title {
+            color: #ccc;
+            font-size: 11px;
+            margin-bottom: 6px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .link-list {
             display: flex;
             flex-direction: column;
             gap: 8px;
-            align-items: center;
-        }
-
-        /* 顯示連結的狀態 */
-        .footer-info.show .link-wrapper {
-            max-height: 100px;
-            opacity: 1;
+            padding: 4px 0;
         }
 
         .footer-info a {
             color: #4ecdc4;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            white-space: nowrap;
+            gap: 6px;
+            font-size: 13px;
+            word-break: break-word;
+            white-space: normal;
         }
 
         .footer-info a::before {
             content: "🔗 ";
+            font-size: 11px;
         }
 
         .footer-info a:hover {
             color: #ffd700;
             text-decoration: underline;
+            transform: translateX(2px);
         }
 
         /* 手機版調整位置 */
         @media screen and (max-width: 567px) {
             .footer-info {
-                bottom: 10px;
-                left: 10px;
+                bottom: 12px;
+                left: 12px;
                 top: auto;
                 transform: none;
-                padding: 6px 12px;
+                padding: 10px 14px;
                 font-size: 12px;
-                gap: 6px;
-                background: rgba(0, 0, 0, 0.8);
-                border-radius: 15px;
+                max-width: 220px;
             }
-            
             .footer-info .author {
-                font-size: 12px;
+                font-size: 14px;
             }
-            
             .footer-info a {
-                font-size: 12px;
+                font-size: 11px;
             }
-            
-            .footer-info .link-wrapper {
-                gap: 6px;
+            .link-section-title {
+                font-size: 10px;
+            }
+            .footer-info.show .link-section {
+                max-height: 160px;
             }
         }
-        
     </style>
 </head>
 <body>
@@ -333,20 +364,34 @@
         <div class="loading" id="loading">載入中...</div>
     </div>
 
-    <!-- 作者和超連結資訊 - 點擊作者顯示連結，再次點擊收回 -->
+    <!-- 全新的作者連結區塊：點擊作者展開上下兩個連結區塊 -->
     <div class="footer-info" id="footer-info">
         <span class="author" id="author-name">作者:王靖凱 目錄</span>
-        <div class="link-wrapper">
-            <a href="https://edenjjj.pyscriptapps.com/han-wen-40yin/latest/" target="_blank" rel="noopener noreferrer">韓文40音</a>
-            <a href="https://docs.google.com/document/d/1r4BR8HRo5CoJqII_uXjkPwSovCmlb4fW_G-j6vc2Jbk/edit?usp=sharing/" target="_blank" rel="noopener noreferrer">N1音讀漢語</a>
-            <a href="https://docs.google.com/document/d/16G_nK8qEcrzQ3HOu6X9W69SU4wP8l8D-CjtLOWFSatw/edit?usp=sharing/" target="_blank" rel="noopener noreferrer">N1動形容詞500個</a>
-            <a href="https://kakuyomu.jp/works/1177354054917560964" target="_blank" rel="noopener noreferrer">好書推薦-赤月ヤモリ</a>
-            <a href="https://kakuyomu.jp/works/16817330661274615404" target="_blank" rel="noopener noreferrer">好書推薦-赤月ヤモリ</a>
-            <a href="https://www.facebook.com/eden.wang.54/" target="_blank" rel="noopener noreferrer">作者的FB</a>
-            <a href="mailto:yakinikumanjjj@gmail.com?subject=意見回饋">意見回饋</a>
+
+        <!-- 上方連結區：好書推薦、聯絡方式 -->
+        <div class="link-section link-section-upper" id="link-section-upper">
+            <div class="link-section-title">📖 推薦好書・聯絡</div>
+            <div class="link-list">
+                <a href="https://kakuyomu.jp/works/1177354054917560964" target="_blank" rel="noopener noreferrer">好書推薦-赤月ヤモリ(1)</a>
+                <a href="https://kakuyomu.jp/works/16817330661274615404" target="_blank" rel="noopener noreferrer">好書推薦-赤月ヤモリ(2)</a>
+                <a href="https://www.facebook.com/eden.wang.54/" target="_blank" rel="noopener noreferrer">作者的FB</a>
+                <a href="mailto:yakinikumanjjj@gmail.com?subject=意見回饋">📧 意見回饋</a>
+                <!-- 你可以繼續在此新增更多連結，最多可放 20+ 個，會自動滾動 -->
+            </div>
+        </div>
+
+        <!-- 下方連結區：韓文・日文學習資源 -->
+        <div class="link-section link-section-lower" id="link-section-lower">
+            <div class="link-section-title">🇯🇵 日文・🇰🇷 韓文學習</div>
+            <div class="link-list">
+                <a href="https://edenjjj.pyscriptapps.com/han-wen-40yin/latest/" target="_blank" rel="noopener noreferrer">韓文40音</a>
+                <a href="https://docs.google.com/document/d/1r4BR8HRo5CoJqII_uXjkPwSovCmlb4fW_G-j6vc2Jbk/edit?usp=sharing/" target="_blank" rel="noopener noreferrer">N1音讀漢語</a>
+                <a href="https://docs.google.com/document/d/16G_nK8qEcrzQ3HOu6X9W69SU4wP8l8D-CjtLOWFSatw/edit?usp=sharing/" target="_blank" rel="noopener noreferrer">N1動形容詞500個</a>
+                <!-- 可在下方繼續新增日文、韓文相關連結 -->
+            </div>
         </div>
     </div>
-    
+
     <py-script>
         from js import document, window
         from pyodide.ffi import create_proxy
@@ -361,9 +406,8 @@
         footer_info = document.getElementById('footer-info')
         author_name = document.getElementById('author-name')
         
-        # 切換顯示連結的函數
+        # 切換顯示連結的函數（保持原有邏輯，但現在兩個區塊會一起出現）
         def toggle_links(event):
-            # 切換 show 類別
             if footer_info.classList.contains('show'):
                 footer_info.classList.remove('show')
             else:
@@ -372,7 +416,8 @@
         # 綁定點擊事件
         author_name.addEventListener('click', create_proxy(toggle_links))
 
-        # ========== 資料定義 ==========
+        # ========== 以下為原有 PyScript 程式碼，完全保留 ==========
+        # 資料定義
         RAW_TEXTS = {
             4: "あ い う え お か き く け こ さ し す せ そ た ち つ て と な に ぬ ね の は ひ ふ へ ほ ま み む め も や ゆ よ ら り る れ ろ わ を ん",
             5: "ア イ ウ エ オ カ キ ク ケ コ サ シ ス セ ソ タ チ ツ テ ト ナ ニ ヌ ネ ノ ハ ヒ フ ヘ ホ マ ミ ム メ モ ヤ ユ ヨ ラ リ ル レ ロ ワ ヲ ン",
@@ -467,7 +512,7 @@
         for key in RAW_TEXTS:
             library_words[key] = RAW_TEXTS[key].split()
 
-        # ========== 強化補全 ==========
+        # 強化補全
         def ensure_all_words_covered():
             all_words = set()
             for words in library_words.values():
@@ -502,18 +547,17 @@
 
         ensure_all_words_covered()
 
-        # ========== 狀態管理 ==========
+        # 狀態管理
         library_status = {4: True, 5: False, 6: False, 7: False}
         pronunciation_status = {'chinese': False, 'romaji': False}
         pronunciation_locked = False
         last_click_time = 0
         current_word = 'あ'
         
-        # 儲存對話框引用
         dialogs = {}
         contents = {}
 
-        # ========== 電腦版配置 ==========
+        # 電腦版配置
         desktop_config = {
             1: {'left': '38%', 'top': '10%', 'width': '36%', 'height': '54%', 'font_size': '230px'},
             2: {'left': '75%', 'top': '20%', 'width': '23%', 'height': '18%', 'font_size': '76px'},
@@ -526,7 +570,7 @@
             9: {'left': '75%', 'top': '70%', 'width': '15%', 'height': '27%', 'font_size': '40px'}
         }
 
-        # ========== 手機版配置 ==========
+        # 手機版配置
         mobile_config = {
             1: {'font_size': '90px', 'icon': None},
             2: {'font_size': '30px', 'icon': None},
@@ -539,10 +583,8 @@
             9: {'font_size': '18px'}
         }
 
-        # ========== 輔助函數：創建對話框 ==========
         def create_dialog(dialog_id, base_config):
             config = base_config.copy()
-            
             width = window.innerWidth
             is_mobile = width <= 567
             
@@ -604,7 +646,6 @@
             
             return dialog, content_div
 
-        # ========== 手機版布局 ==========
         def create_mobile_layout(dialog, dialog_id):
             if dialog_id == 1:
                 main_container.innerHTML = ''
@@ -638,7 +679,6 @@
                 row = document.getElementById('action-row')
                 row.appendChild(dialog)
 
-        # ========== 基礎配置 ==========
         base_config = {
             1: {'class': 'dialog-1', 'is_clickable': False},
             2: {'class': 'dialog-2', 'is_clickable': False},
@@ -651,7 +691,6 @@
             9: {'class': 'dialog-9', 'is_clickable': True}
         }
 
-        # ========== 建立所有對話框 ==========
         for dialog_id in range(1, 10):
             dialog, content = create_dialog(dialog_id, base_config[dialog_id])
             dialogs[dialog_id] = dialog
@@ -660,7 +699,6 @@
         if loading_div:
             loading_div.style.display = 'none'
 
-        # ========== 更新文字庫視覺狀態 ==========
         def update_library_appearance():
             for lib_id in [4, 5, 6, 7]:
                 dialog = dialogs[lib_id]
@@ -669,7 +707,6 @@
                 else:
                     dialog.classList.add('library-off')
 
-        # ========== 更新顯示 ==========
         def update_displays():
             contents[1].textContent = current_word
             
@@ -711,7 +748,6 @@
             else:
                 current_word = random.choice(available_words)
 
-        # ========== 事件處理 ==========
         def on_library_click(lib_id):
             def handler(event):
                 global library_status
@@ -723,7 +759,6 @@
 
         def on_pronunciation_click(event):
             global last_click_time, pronunciation_locked, pronunciation_status
-            
             current_time = time() * 1000
             time_diff = current_time - last_click_time
             
@@ -751,16 +786,13 @@
 
         def on_next_click(event):
             global pronunciation_status, pronunciation_locked
-            
             if not pronunciation_locked:
                 pronunciation_status['chinese'] = False
                 pronunciation_status['romaji'] = False
-            
             update_current_word(force=True)
             update_displays()
             print(f'更換文字為: {current_word}')
 
-        # ========== 綁定事件 ==========
         dialogs[4].addEventListener('click', create_proxy(on_library_click(4)))
         dialogs[5].addEventListener('click', create_proxy(on_library_click(5)))
         dialogs[6].addEventListener('click', create_proxy(on_library_click(6)))
@@ -768,21 +800,15 @@
         dialogs[8].addEventListener('click', create_proxy(on_pronunciation_click))
         dialogs[9].addEventListener('click', create_proxy(on_next_click))
 
-        # ========== 初始化 ==========
         current_word = random.choice(library_words[4])
         update_library_appearance()
         update_displays()
 
         print('=' * 50)
         print('王又贏學日文五十音 - 響應式版')
-        print('電腦版：絕對定位自由布局')
-        print('手機版：垂直 Flex 布局，完全獨立')
-        print('點擊文字庫可開關（關閉時變暗淡），點擊8讀音可切換/鎖定，點擊9下一個隨機換字')
-        print('鎖定狀態下（雙擊8），9不會關閉讀音，8會變亮')
-        print('點擊作者名稱可顯示/隱藏韓文學習連結')
+        print('作者連結已改為上下兩區塊，可容納更多連結')
+        print('點擊作者名稱可顯示/隱藏所有連結')
         print('=' * 50)
-        print(f'當前螢幕尺寸: {window.innerWidth} x {window.innerHeight}')
-        print(f'當前模式: {"手機版" if window.innerWidth <= 567 else "電腦版"}')
     </py-script>
 </body>
 </html>
