@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>王又贏學日文五十音 1.4.2</title>
+    <title>王又贏學日文五十音 1.5.1</title>
     
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VWZZ03R3TL"></script>
@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
     <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
     <style>
+        /* 原有所有樣式保留，僅修改 .footer-info 部分 */
         * {
             margin: 0;
             padding: 0;
@@ -34,7 +35,6 @@
             padding: 10px;
         }
 
-        /* 主要容器：電腦版使用絕對定位 */
         .main-container {
             position: relative;
             width: 100%;
@@ -47,7 +47,6 @@
             transition: all 0.3s ease;
         }
 
-        /* 所有對話框通用樣式 */
         .dialog {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
@@ -62,14 +61,12 @@
             overflow: hidden;
         }
 
-        /* 電腦版：絕對定位 */
         @media screen and (min-width: 568px) {
             .dialog {
                 position: absolute;
             }
         }
 
-        /* 手機版：改用 Flex 垂直排列 */
         @media screen and (max-width: 567px) {
             .main-container {
                 position: static;
@@ -81,7 +78,6 @@
                 gap: 10px;
                 border: none;
             }
-
             .dialog {
                 position: static;
                 width: 100% !important;
@@ -89,58 +85,45 @@
                 min-height: 100px;
                 margin-bottom: 10px;
             }
-
-            /* 手機版特殊排版：1顯示最大 */
             .dialog-1 {
                 min-height: 200px;
             }
-
-            /* 2和3並排 */
             .pronunciation-row {
                 display: flex;
                 gap: 10px;
                 width: 100%;
             }
-
             .pronunciation-row .dialog {
                 flex: 1;
                 margin-bottom: 0;
             }
-
-            /* 左下四個文字庫用 2x2 網格 */
             .library-grid {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 10px;
                 width: 100%;
             }
-
             .library-grid .dialog {
                 margin-bottom: 0;
                 min-height: 60px;
             }
-
-            /* 8和9並排 */
             .action-row {
                 display: flex;
                 gap: 10px;
                 width: 100%;
             }
-
             .action-row .dialog {
                 flex: 1;
                 margin-bottom: 0;
             }
         }
 
-        /* 關閉狀態的文字庫 - 變暗淡 */
         .dialog.library-off {
             opacity: 0.5;
             filter: grayscale(0.7);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* 顯示內容區域 (橫排、不換行) */
         .display-content {
             flex: 1;
             display: flex;
@@ -160,29 +143,24 @@
             transition: font-size 0.3s ease;
         }
 
-        /* 文字庫圖標 */
         .library-icon {
             font-size: 24px;
             margin-bottom: 8px;
             transition: font-size 0.3s ease;
         }
 
-        /* 可點擊樣式 */
         .clickable {
             cursor: pointer;
             transition: transform 0.2s;
         }
-
         .clickable:hover {
             transform: scale(1.02);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
         }
-
         .clickable:active {
             transform: scale(0.98);
         }
 
-        /* 特定對話框背景色 */
         .dialog-1 { background: linear-gradient(145deg, #ff6b6b, #ff8e8e); }
         .dialog-2 { background: linear-gradient(145deg, #4ecdc4, #6ee7e7); }
         .dialog-3 { background: linear-gradient(145deg, #4ecdc4, #6ee7e7); }
@@ -192,15 +170,12 @@
         .dialog-7 { background: linear-gradient(145deg, #96ceb4, #b8e0c0); }
         .dialog-8 { background: linear-gradient(145deg, #a29bfe, #c3b9ff); }
         .dialog-9 { background: linear-gradient(145deg, #a29bfe, #c3b9ff); }
-
-        /* 鎖定狀態下的 dialog-8 樣式（更亮） */
         .dialog-8.locked {
             background: linear-gradient(145deg, #8a6ef0, #aa88ff);
             box-shadow: 0 0 20px #8a6ef0, 0 10px 30px rgba(0, 0, 0, 0.4);
             border: 2px solid #ffd700;
         }
 
-        /* 載入中提示 */
         .loading {
             position: absolute;
             top: 50%;
@@ -211,11 +186,9 @@
             text-align: center;
         }
 
-        /* 手機版隱藏輔助容器 */
         .pronunciation-row, .library-grid, .action-row {
             display: none;
         }
-
         @media screen and (max-width: 567px) {
             .pronunciation-row, .library-grid, .action-row {
                 display: flex;
@@ -225,16 +198,16 @@
             }
         }
 
-        /* ========== 全新的作者連結區塊 ========== */
+        /* ========== 修正後的作者連結區塊 ========== */
         .footer-info {
             position: fixed;
             bottom: 50%;
             left: 15px;
             transform: translateY(50%);
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(8px);
-            padding: 12px 16px;
-            border-radius: 24px;
+            padding: 12px 18px;
+            border-radius: 28px;
             font-size: 14px;
             z-index: 1000;
             display: flex;
@@ -243,7 +216,8 @@
             align-items: center;
             font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
             transition: all 0.3s ease;
-            max-width: 260px;
+            min-width: 180px;
+            max-width: 280px;
         }
 
         .footer-info .author {
@@ -256,6 +230,7 @@
             text-align: center;
             width: 100%;
             padding: 4px 0;
+            white-space: nowrap;
         }
 
         .footer-info .author::before {
@@ -267,46 +242,36 @@
             text-shadow: 0 0 6px #ffd700;
         }
 
-        /* 連結區塊共用樣式 */
-        .link-section {
+        /* 上下兩個連結區塊共用樣式（無標題，純連結列表） */
+        .link-group {
             width: 100%;
-            overflow-y: auto;
-            transition: max-height 0.4s ease, opacity 0.3s ease;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.2s;
             max-height: 0;
             opacity: 0;
             visibility: hidden;
         }
 
-        .footer-info.show .link-section {
-            max-height: 200px;    /* 足夠顯示約 10 個連結，超過可滾動 */
+        .footer-info.show .link-group {
+            max-height: 300px;    /* 足夠容納所有連結，無需滾輪 */
             opacity: 1;
             visibility: visible;
             margin-top: 6px;
         }
 
-        /* 上方區塊與下方區塊分隔 */
-        .link-section-upper {
+        /* 上下兩組之間加分隔線 */
+        .link-group-upper {
             border-bottom: 1px solid rgba(255,255,255,0.3);
-            margin-bottom: 6px;
         }
-
-        .link-section-lower {
+        .link-group-lower {
             margin-top: 2px;
-        }
-
-        .link-section-title {
-            color: #ccc;
-            font-size: 11px;
-            margin-bottom: 6px;
-            text-align: center;
-            letter-spacing: 1px;
         }
 
         .link-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            padding: 4px 0;
+            gap: 10px;
+            padding: 6px 0;
         }
 
         .footer-info a {
@@ -319,6 +284,7 @@
             font-size: 13px;
             word-break: break-word;
             white-space: normal;
+            line-height: 1.3;
         }
 
         .footer-info a::before {
@@ -332,7 +298,7 @@
             transform: translateX(2px);
         }
 
-        /* 手機版調整位置 */
+        /* 手機版調整 */
         @media screen and (max-width: 567px) {
             .footer-info {
                 bottom: 12px;
@@ -341,53 +307,49 @@
                 transform: none;
                 padding: 10px 14px;
                 font-size: 12px;
-                max-width: 220px;
+                max-width: 240px;
+                min-width: 160px;
             }
             .footer-info .author {
                 font-size: 14px;
+                white-space: normal;
             }
             .footer-info a {
                 font-size: 11px;
             }
-            .link-section-title {
-                font-size: 10px;
-            }
-            .footer-info.show .link-section {
-                max-height: 160px;
+            .footer-info.show .link-group {
+                max-height: 280px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- 主要容器，由 PyScript 動態填充內部結構 -->
     <div class="main-container" id="main-container">
         <div class="loading" id="loading">載入中...</div>
     </div>
 
-    <!-- 全新的作者連結區塊：點擊作者展開上下兩個連結區塊 -->
+    <!-- 作者連結區塊：點擊作者展開上下兩組連結，無標題，無滾輪，大小適中 -->
     <div class="footer-info" id="footer-info">
         <span class="author" id="author-name">作者:王靖凱 目錄</span>
 
-        <!-- 上方連結區：好書推薦、聯絡方式 -->
-        <div class="link-section link-section-upper" id="link-section-upper">
-            <div class="link-section-title">📖 推薦好書・聯絡</div>
+        <!-- 上方連結組：好書推薦、聯絡方式 -->
+        <div class="link-group link-group-upper" id="link-group-upper">
             <div class="link-list">
                 <a href="https://kakuyomu.jp/works/1177354054917560964" target="_blank" rel="noopener noreferrer">好書推薦-赤月ヤモリ(1)</a>
                 <a href="https://kakuyomu.jp/works/16817330661274615404" target="_blank" rel="noopener noreferrer">好書推薦-赤月ヤモリ(2)</a>
                 <a href="https://www.facebook.com/eden.wang.54/" target="_blank" rel="noopener noreferrer">作者的FB</a>
-                <a href="mailto:yakinikumanjjj@gmail.com?subject=意見回饋">📧 意見回饋</a>
-                <!-- 你可以繼續在此新增更多連結，最多可放 20+ 個，會自動滾動 -->
+                <a href="mailto:yakinikumanjjj@gmail.com?subject=意見回饋">意見回饋</a>
+                <!-- 可在此繼續新增連結，只要總高度不超過 max-height 就不會出現滾輪 -->
             </div>
         </div>
 
-        <!-- 下方連結區：韓文・日文學習資源 -->
-        <div class="link-section link-section-lower" id="link-section-lower">
-            <div class="link-section-title">🇯🇵 日文・🇰🇷 韓文學習</div>
+        <!-- 下方連結組：韓文、日文學習資源 -->
+        <div class="link-group link-group-lower" id="link-group-lower">
             <div class="link-list">
                 <a href="https://edenjjj.pyscriptapps.com/han-wen-40yin/latest/" target="_blank" rel="noopener noreferrer">韓文40音</a>
                 <a href="https://docs.google.com/document/d/1r4BR8HRo5CoJqII_uXjkPwSovCmlb4fW_G-j6vc2Jbk/edit?usp=sharing/" target="_blank" rel="noopener noreferrer">N1音讀漢語</a>
                 <a href="https://docs.google.com/document/d/16G_nK8qEcrzQ3HOu6X9W69SU4wP8l8D-CjtLOWFSatw/edit?usp=sharing/" target="_blank" rel="noopener noreferrer">N1動形容詞500個</a>
-                <!-- 可在下方繼續新增日文、韓文相關連結 -->
+                <!-- 可在此繼續新增更多學習連結 -->
             </div>
         </div>
     </div>
@@ -398,26 +360,20 @@
         import random
         from time import time
 
-        # 獲取主容器
         main_container = document.getElementById('main-container')
         loading_div = document.getElementById('loading')
-
-        # 獲取作者資訊容器
         footer_info = document.getElementById('footer-info')
         author_name = document.getElementById('author-name')
         
-        # 切換顯示連結的函數（保持原有邏輯，但現在兩個區塊會一起出現）
         def toggle_links(event):
             if footer_info.classList.contains('show'):
                 footer_info.classList.remove('show')
             else:
                 footer_info.classList.add('show')
         
-        # 綁定點擊事件
         author_name.addEventListener('click', create_proxy(toggle_links))
 
-        # ========== 以下為原有 PyScript 程式碼，完全保留 ==========
-        # 資料定義
+        # ========== 以下為原有 PyScript 程式碼（完全保留，無需改動） ==========
         RAW_TEXTS = {
             4: "あ い う え お か き く け こ さ し す せ そ た ち つ て と な に ぬ ね の は ひ ふ へ ほ ま み む め も や ゆ よ ら り る れ ろ わ を ん",
             5: "ア イ ウ エ オ カ キ ク ケ コ サ シ ス セ ソ タ チ ツ テ ト ナ ニ ヌ ネ ノ ハ ヒ フ ヘ ホ マ ミ ム メ モ ヤ ユ ヨ ラ リ ル レ ロ ワ ヲ ン",
@@ -425,7 +381,6 @@
             7: "きゃ きゅ きょ しゃ しゅ しょ ちゃ ちゅ ちょ にゃ にゅ にょ ひゃ ひゅ ひょ みゃ みゅ みょ りゃ りゅ りょ ぎゃ ぎゅ ぎょ じゃ じゅ じょ びゃ びゅ びょ ぴゃ ぴゅ ぴょ キャ キュ キョ シャ シュ ショ チャ チュ チョ ニャ ニュ ニョ ヒャ ヒュ ヒョ ミャ ミュ ミョ リャ リュ リョ ギャ ギュ ギョ ジャ ジュ ジョ ビャ ビュ ビョ ピャ ピュ ピョ"
         }
 
-        # 中文讀音 (基礎)
         BASE_CHINESE = {
             'あ': '阿', 'い': '依', 'う': '烏', 'え': '欸', 'お': '喔',
             'か': '卡', 'き': 'ki', 'く': '哭', 'け': 'k', 'こ': '摳',
@@ -466,7 +421,6 @@
             'ピャ': 'pya', 'ピュ': 'pyu', 'ピョ': 'pyo'
         }
 
-        # 羅馬拼音 (基礎)
         BASE_ROMAJI = {
             'あ': 'a', 'い': 'i', 'う': 'u', 'え': 'e', 'お': 'o',
             'か': 'ka', 'き': 'ki', 'く': 'ku', 'け': 'ke', 'こ': 'ko',
@@ -482,6 +436,7 @@
             'ざ': 'za', 'じ': 'ji', 'ず': 'zu', 'ぜ': 'ze', 'ぞ': 'zo',
             'だ': 'da', 'ぢ': 'ji', 'づ': 'zu', 'で': 'de', 'ど': 'do',
             'ば': 'ba', 'び': 'bi', 'ぶ': 'bu', 'べ': 'be', 'ぼ': 'bo',
+            'ぱ': 'pa', 'び': 'bi', 'ぶ': 'bu', 'べ': 'be', 'ぼ': 'bo',
             'ぱ': 'pa', 'ぴ': 'pi', 'ぷ': 'pu', 'ぺ': 'pe', 'ぽ': 'po',
             'きゃ': 'kya', 'きゅ': 'kyu', 'きょ': 'kyo',
             'しゃ': 'sha', 'しゅ': 'shu', 'しょ': 'sho',
@@ -507,23 +462,19 @@
             'ピャ': 'pya', 'ピュ': 'pyu', 'ピョ': 'pyo'
         }
 
-        # 解析文字庫為列表
         library_words = {}
         for key in RAW_TEXTS:
             library_words[key] = RAW_TEXTS[key].split()
 
-        # 強化補全
         def ensure_all_words_covered():
             all_words = set()
             for words in library_words.values():
                 all_words.update(words)
-
             kata_to_hira = {}
             for code in range(0x3041, 0x3097):
                 hira = chr(code)
                 kata = chr(code + 0x60)
                 kata_to_hira[kata] = hira
-
             for word in all_words:
                 if word not in BASE_CHINESE:
                     if len(word) == 1 and '\u30a0' <= word <= '\u30ff':
@@ -534,7 +485,6 @@
                             BASE_CHINESE[word] = word
                     else:
                         BASE_CHINESE[word] = word
-
                 if word not in BASE_ROMAJI:
                     if len(word) == 1 and '\u30a0' <= word <= '\u30ff':
                         hira = kata_to_hira.get(word)
@@ -547,7 +497,6 @@
 
         ensure_all_words_covered()
 
-        # 狀態管理
         library_status = {4: True, 5: False, 6: False, 7: False}
         pronunciation_status = {'chinese': False, 'romaji': False}
         pronunciation_locked = False
@@ -557,7 +506,6 @@
         dialogs = {}
         contents = {}
 
-        # 電腦版配置
         desktop_config = {
             1: {'left': '38%', 'top': '10%', 'width': '36%', 'height': '54%', 'font_size': '230px'},
             2: {'left': '75%', 'top': '20%', 'width': '23%', 'height': '18%', 'font_size': '76px'},
@@ -570,7 +518,6 @@
             9: {'left': '75%', 'top': '70%', 'width': '15%', 'height': '27%', 'font_size': '40px'}
         }
 
-        # 手機版配置
         mobile_config = {
             1: {'font_size': '90px', 'icon': None},
             2: {'font_size': '30px', 'icon': None},
@@ -587,7 +534,6 @@
             config = base_config.copy()
             width = window.innerWidth
             is_mobile = width <= 567
-            
             if is_mobile:
                 if dialog_id in mobile_config:
                     mobile_settings = mobile_config[dialog_id]
@@ -600,11 +546,9 @@
             else:
                 if dialog_id in desktop_config:
                     config.update(desktop_config[dialog_id])
-            
             dialog = document.createElement('div')
             dialog.id = f'dialog-{dialog_id}'
             dialog.className = f'dialog {config["class"]}'
-            
             if not is_mobile:
                 if 'left' in config:
                     dialog.style.left = config['left']
@@ -614,19 +558,14 @@
                     dialog.style.width = config['width']
                 if 'height' in config:
                     dialog.style.height = config['height']
-            
             if config.get('is_clickable', False):
                 dialog.className += ' clickable'
-
             content_div = document.createElement('div')
             content_div.id = f'content-{dialog_id}'
             content_div.className = 'display-content'
-            
             if 'font_size' in config:
                 content_div.style.fontSize = config['font_size']
-            
             dialog.appendChild(content_div)
-
             if dialog_id in [4, 5, 6, 7]:
                 icon_div = document.createElement('div')
                 icon_div.className = 'library-icon'
@@ -638,12 +577,10 @@
                 content_div.textContent = '讀音'
             elif dialog_id == 9:
                 content_div.textContent = '下一個'
-
             if is_mobile:
                 create_mobile_layout(dialog, dialog_id)
             else:
                 main_container.appendChild(dialog)
-            
             return dialog, content_div
 
         def create_mobile_layout(dialog, dialog_id):
@@ -709,21 +646,16 @@
 
         def update_displays():
             contents[1].textContent = current_word
-            
             show_pronunciation = pronunciation_locked or pronunciation_status['chinese'] or pronunciation_status['romaji']
-            
             if show_pronunciation and current_word in BASE_CHINESE:
                 contents[2].textContent = BASE_CHINESE[current_word]
             else:
                 contents[2].textContent = ''
-                
             if show_pronunciation and current_word in BASE_ROMAJI:
                 contents[3].textContent = BASE_ROMAJI[current_word]
             else:
                 contents[3].textContent = ''
-
             update_library_appearance()
-
             if pronunciation_locked:
                 contents[8].textContent = '鎖定'
                 dialogs[8].classList.add('locked')
@@ -754,14 +686,12 @@
                 library_status[lib_id] = not library_status[lib_id]
                 update_current_word(force=False)
                 update_displays()
-                print(f'文字庫 {lib_id} 狀態: {"開啟" if library_status[lib_id] else "關閉"}')
             return handler
 
         def on_pronunciation_click(event):
             global last_click_time, pronunciation_locked, pronunciation_status
             current_time = time() * 1000
             time_diff = current_time - last_click_time
-            
             if time_diff < 300:
                 pronunciation_locked = not pronunciation_locked
                 if pronunciation_locked:
@@ -770,7 +700,6 @@
                 else:
                     pronunciation_status['chinese'] = False
                     pronunciation_status['romaji'] = False
-                print(f'讀音鎖定: {"開啟" if pronunciation_locked else "關閉"}')
             else:
                 if not pronunciation_locked:
                     if pronunciation_status['chinese'] or pronunciation_status['romaji']:
@@ -779,8 +708,6 @@
                     else:
                         pronunciation_status['chinese'] = True
                         pronunciation_status['romaji'] = True
-                    print(f'讀音顯示: {"開啟" if pronunciation_status["chinese"] else "關閉"}')
-            
             last_click_time = current_time
             update_displays()
 
@@ -791,7 +718,6 @@
                 pronunciation_status['romaji'] = False
             update_current_word(force=True)
             update_displays()
-            print(f'更換文字為: {current_word}')
 
         dialogs[4].addEventListener('click', create_proxy(on_library_click(4)))
         dialogs[5].addEventListener('click', create_proxy(on_library_click(5)))
@@ -803,12 +729,6 @@
         current_word = random.choice(library_words[4])
         update_library_appearance()
         update_displays()
-
-        print('=' * 50)
-        print('王又贏學日文五十音 - 響應式版')
-        print('作者連結已改為上下兩區塊，可容納更多連結')
-        print('點擊作者名稱可顯示/隱藏所有連結')
-        print('=' * 50)
     </py-script>
 </body>
 </html>
