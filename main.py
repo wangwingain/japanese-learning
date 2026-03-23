@@ -7,6 +7,83 @@ from time import time
 main_container = document.getElementById('main-container')
 loading_div = document.getElementById('loading')
 
+# 獲取作者相關元素（需要在 HTML 中定義）
+footer_info = document.getElementById('footer-info')
+author_name = document.getElementById('author-name')
+speaker_btn = document.getElementById('speaker-btn')
+
+# ========== AI 朗讀功能 ==========
+# 使用瀏覽器內建的 Web Speech API
+from js import speechSynthesis, SpeechSynthesisUtterance
+
+# 判斷文字是哪種語言
+def detect_language(text):
+    # 檢查是否包含韓文（諺文範圍 AC00-D7AF）
+    for ch in text:
+        if 0xAC00 <= ord(ch) <= 0xD7AF:
+            return 'ko-KR'
+    # 檢查是否包含日文（平假名、片假名範圍）
+    for ch in text:
+        if 0x3040 <= ord(ch) <= 0x30FF:
+            return 'ja-JP'
+    # 預設日文
+    return 'ja-JP'
+
+# 朗讀當前文字
+def speak_text(event):
+    # 獲取 dialog-1 顯示的當前文字
+    current_word_element = document.getElementById('content-1')
+    if not current_word_element:
+        print("找不到當前文字元素")
+        return
+    
+    text_to_speak = current_word_element.textContent
+    if not text_to_speak or text_to_speak == '':
+        print("沒有文字可朗讀")
+        return
+    
+    # 添加朗讀中動畫效果
+    speaker_btn.classList.add('speaking')
+    
+    # 檢測語言
+    lang = detect_language(text_to_speak)
+    
+    # 創建語音合成物件
+    utterance = SpeechSynthesisUtterance.new(text_to_speak)
+    utterance.lang = lang
+    utterance.rate = 0.9  # 語速稍慢，適合學習
+    utterance.pitch = 1.0
+    
+    # 朗讀結束後移除動畫效果
+    def on_end(event):
+        speaker_btn.classList.remove('speaking')
+    
+    utterance.onend = create_proxy(on_end)
+    
+    # 朗讀錯誤處理
+    def on_error(event):
+        speaker_btn.classList.remove('speaking')
+        print(f"朗讀錯誤: {event}")
+    
+    utterance.onerror = create_proxy(on_error)
+    
+    # 開始朗讀（停止任何正在進行的朗讀）
+    speechSynthesis.cancel()
+    speechSynthesis.speak(utterance)
+    print(f"朗讀: {text_to_speak} (語言: {lang})")
+
+# 綁定音量按鈕點擊事件
+speaker_btn.addEventListener('click', create_proxy(speak_text))
+
+# ========== 作者連結展開/收合功能 ==========
+def toggle_links(event):
+    if footer_info.classList.contains('show'):
+        footer_info.classList.remove('show')
+    else:
+        footer_info.classList.add('show')
+
+author_name.addEventListener('click', create_proxy(toggle_links))
+
 # ========== 資料定義 ==========
 RAW_TEXTS = {
     4: "あ い う え お か き く け こ さ し す せ そ た ち つ て と な に ぬ ね の は ひ ふ へ ほ ま み む め も や ゆ よ ら り る れ ろ わ を ん",
@@ -159,7 +236,7 @@ desktop_config = {
     9: {'left': '75%', 'top': '70%', 'width': '15%', 'height': '27%', 'font_size': '40px'}
 }
 
-# ========== 手機版配置 (已更新) ==========
+# ========== 手機版配置 ==========
 mobile_config = {
     1: {'font_size': '90px', 'icon': None},
     2: {'font_size': '30px', 'icon': None},
@@ -398,10 +475,11 @@ update_library_appearance()
 update_displays()
 
 print('=' * 50)
-print('王又贏學日文五十音 - 響應式版')
+print('王又贏學日文五十音 - 響應式版 (新增AI朗讀功能)')
 print('電腦版：絕對定位自由布局')
 print('手機版：垂直 Flex 布局，完全獨立')
 print('點擊文字庫可開關（關閉時變暗淡），點擊8讀音可切換/鎖定，點擊9下一個隨機換字')
+print('點擊作者旁邊的🔊按鈕可朗讀當前顯示的文字（支援日文/韓文）')
 print('鎖定狀態下（雙擊8），9不會關閉讀音，8會變亮')
 print('=' * 50)
 print(f'當前螢幕尺寸: {window.innerWidth} x {window.innerHeight}')
