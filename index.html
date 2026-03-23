@@ -198,7 +198,7 @@
             }
         }
 
-        /* ========== 修正：作者固定在中央，連結從上下展開 ========== */
+        /* ========== 修正：作者固定在中央，連結從上下展開，無圖示無特效 ========== */
         .footer-info {
             position: fixed;
             bottom: 50%;
@@ -219,12 +219,12 @@
             max-width: 280px;
         }
 
-        /* 作者名稱樣式，位置居中 */
+        /* 作者名稱樣式 - 移除圖示和發光特效 */
         .footer-info .author {
             color: #ffd700;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: none;  /* 移除 hover 特效 */
             font-size: 16px;
             letter-spacing: 1px;
             text-align: center;
@@ -235,13 +235,16 @@
             z-index: 2;
         }
 
+        /* 移除圖示 */
         .footer-info .author::before {
-            content: "📚 ";
+            content: "";
+            display: none;
         }
 
+        /* 移除 hover 放大和發光效果 */
         .footer-info .author:hover {
-            transform: scale(1.02);
-            text-shadow: 0 0 6px #ffd700;
+            transform: none;
+            text-shadow: none;
         }
 
         /* 上下連結組共用樣式 */
