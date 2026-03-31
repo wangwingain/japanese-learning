@@ -1,4 +1,3 @@
-    <py-script>
 from js import document, window
 from pyodide.ffi import create_proxy
 import random
@@ -290,7 +289,7 @@ for dialog_id in range(1, 10):
 if loading_div:
     loading_div.style.display = 'none'
 
-# ========== 朗讀功能（修正版） ==========
+# ========== 朗讀功能 ==========
 from js import speechSynthesis, SpeechSynthesisUtterance
 
 best_ja_voice = None
@@ -484,4 +483,3 @@ print('=' * 50)
 print('王又贏學日文五十音 - 音量按鈕已移至紅色大框框右下角')
 print('音量按鈕放大兩倍，手機版同樣顯示在紅色框內部右下角')
 print('=' * 50)
-    </py-script>
