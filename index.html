@@ -417,9 +417,9 @@
         footer_info = document.getElementById('footer-info')
         author_name = document.getElementById('author-name')
         
-        # 切換連結顯示 - 修正版
+        # 切換連結顯示 - 修正縮進
         def toggle_links(event):
-            # 使用正確的 JavaScript 方法調用
+            # 注意這裡必須有正確的縮進
             if footer_info.classList.contains('show'):
                 footer_info.classList.remove('show')
             else:
@@ -699,7 +699,7 @@
         if loading_div:
             loading_div.style.display = 'none'
 
-        # ========== 朗讀功能（修正版） ==========
+        # ========== 朗讀功能 ==========
         from js import speechSynthesis, SpeechSynthesisUtterance
         
         best_ja_voice = None
@@ -711,7 +711,6 @@
             global best_ja_voice, best_ko_voice, voices_loaded
             voices = speechSynthesis.getVoices()
             
-            # 確保語音已加載
             if len(voices) > 0:
                 for voice in voices:
                     if 'ja' in voice.lang and not best_ja_voice:
@@ -725,7 +724,6 @@
                 if best_ko_voice:
                     print(f"韓文語音: {best_ko_voice.name}")
             else:
-                # 如果語音還沒加載，稍後重試
                 window.setTimeout(create_proxy(init_voices), 100)
 
         def detect_language(text):
@@ -783,14 +781,12 @@
             speechSynthesis.speak(utterance)
             print(f"朗讀: {text_to_speak} (語言: {lang})")
 
-        # 修正：接收事件參數
         def on_voices_changed(event=None):
             init_voices()
 
         speechSynthesis.onvoiceschanged = create_proxy(on_voices_changed)
         init_voices()
         
-        # 獲取音量按鈕並綁定事件
         def bind_speaker_button():
             global speaker_red_btn
             speaker_red_btn = document.getElementById('speaker-btn-red')
@@ -798,7 +794,6 @@
                 speaker_red_btn.addEventListener('click', create_proxy(speak_text))
                 print("音量按鈕已綁定")
             else:
-                # 延遲重試
                 window.setTimeout(create_proxy(bind_speaker_button), 500)
         
         bind_speaker_button()
