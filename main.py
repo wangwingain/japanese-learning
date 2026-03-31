@@ -110,7 +110,7 @@ for key in RAW_TEXTS:
     library_words[key] = RAW_TEXTS[key].split()
 
 def ensure_all_words_covered():
-    all_words = set()
+    all_words = set)     
     for words in library_words.values():
         all_words.update(words)
     kata_to_hira = {}
