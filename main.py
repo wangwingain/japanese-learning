@@ -1,3 +1,4 @@
+    <py-script>
         from js import document, window
         from pyodide.ffi import create_proxy
         import random
@@ -8,7 +9,7 @@
         footer_info = document.getElementById('footer-info')
         author_name = document.getElementById('author-name')
         
-        # 切換連結顯示
+        # 切換連結顯示 - 修正縮進
         def toggle_links(event):
             if footer_info.classList.contains('show'):
                 footer_info.classList.remove('show')
@@ -368,14 +369,12 @@
             speechSynthesis.speak(utterance)
             print(f"朗讀: {text_to_speak} (語言: {lang})")
 
-        # 修正：接收事件參數
         def on_voices_changed(event=None):
             init_voices()
 
         speechSynthesis.onvoiceschanged = create_proxy(on_voices_changed)
         init_voices()
         
-        # 獲取音量按鈕並綁定事件
         def bind_speaker_button():
             global speaker_red_btn
             speaker_red_btn = document.getElementById('speaker-btn-red')
@@ -383,7 +382,6 @@
                 speaker_red_btn.addEventListener('click', create_proxy(speak_text))
                 print("音量按鈕已綁定")
             else:
-                # 延遲重試
                 window.setTimeout(create_proxy(bind_speaker_button), 500)
         
         bind_speaker_button()
@@ -486,3 +484,4 @@
         print('王又贏學日文五十音 - 音量按鈕已移至紅色大框框右下角')
         print('音量按鈕放大兩倍，手機版同樣顯示在紅色框內部右下角')
         print('=' * 50)
+    </py-script>
